@@ -1,6 +1,7 @@
 # CONTEXT — ElectroCAD Studio (ElectricDiagramHNP)
 
 ## Trạng thái hiện tại
+- **Repository:** https://github.com/vip7009pro/ElectricDiagramHNP (branch `main`, đã push).
 - **Tech Stack:** React 19 + Vite + TypeScript + Tailwind CSS v4 + Lucide React + Zustand + Pure SVG + `html-to-image` + `jspdf`.
 - **Trạng thái Build:** `npm run build` (`tsc -b && vite build`) thành công, không lỗi TypeScript.
 - **Lưu trữ:** Tự động lưu thư viện linh kiện và dự án vào `localStorage` (`electrocad_templates_v1`, `electrocad_project_v1`), hỗ trợ Import/Export `.json`.

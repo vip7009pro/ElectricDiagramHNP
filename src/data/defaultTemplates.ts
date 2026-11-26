@@ -1,0 +1,141 @@
+import type { CanvasElement, ElementTemplate, Wire, WirePreset } from '../types/diagram';
+
+export const WIRE_PRESETS: WirePreset[] = [
+  { name: 'Đỏ (24VDC)', color: '#dc2626', description: 'Nguồn dương +24V' },
+  { name: 'Xanh dương (0VDC)', color: '#2563eb', description: 'Nguồn âm 0V / COM' },
+  { name: 'Đen (Tín hiệu)', color: '#1e293b', description: 'Dây điều khiển / I/O' },
+  { name: 'Cam (220VAC)', color: '#ea580c', description: 'Nguồn pha L' },
+  { name: 'Xanh lá/Vàng (PE)', color: '#16a34a', description: 'Nối đất bảo vệ' },
+  { name: 'Tím (Truyền thông)', color: '#9333ea', description: 'RS485 / Analog' },
+];
+
+export const DEFAULT_TEMPLATES: ElementTemplate[] = [
+  {
+    id: 'tpl-psu-24v',
+    name: 'Nguồn 24VDC 10A',
+    prefix: 'PS',
+    width: 160,
+    height: 120,
+    borderColor: '#0f172a',
+    fillColor: '#f8fafc',
+    pins: [
+      { id: 'psu-l', name: 'L', side: 'top', offset: 40 },
+      { id: 'psu-n', name: 'N', side: 'top', offset: 80 },
+      { id: 'psu-pe', name: 'PE', side: 'top', offset: 120 },
+      { id: 'psu-v1', name: '+24V', side: 'bottom', offset: 40 },
+      { id: 'psu-v2', name: '+24V', side: 'bottom', offset: 80 },
+      { id: 'psu-0v', name: '0V', side: 'bottom', offset: 120 },
+    ],
+  },
+  {
+    id: 'tpl-relay-8pin',
+    name: 'Relay trung gian 8P',
+    prefix: 'K',
+    width: 140,
+    height: 140,
+    borderColor: '#1d4ed8',
+    fillColor: '#eff6ff',
+    pins: [
+      { id: 'k-13', name: '13(+)', side: 'left', offset: 40 },
+      { id: 'k-14', name: '14(-)', side: 'left', offset: 100 },
+      { id: 'k-1', name: '1(NC)', side: 'top', offset: 40 },
+      { id: 'k-4', name: '4(NC)', side: 'top', offset: 100 },
+      { id: 'k-5', name: '5(NO)', side: 'right', offset: 40 },
+      { id: 'k-8', name: '8(NO)', side: 'right', offset: 100 },
+      { id: 'k-9', name: '9(COM)', side: 'bottom', offset: 40 },
+      { id: 'k-12', name: '12(COM)', side: 'bottom', offset: 100 },
+    ],
+  },
+  {
+    id: 'tpl-plc-16pin',
+    name: 'PLC FX5U-16MT',
+    prefix: 'PLC',
+    width: 240,
+    height: 180,
+    borderColor: '#0f766e',
+    fillColor: '#f0fdfa',
+    pins: [
+      // Top: 8 Inputs
+      { id: 'plc-ss', name: 'S/S', side: 'top', offset: 20 },
+      { id: 'plc-x0', name: 'X0', side: 'top', offset: 50 },
+      { id: 'plc-x1', name: 'X1', side: 'top', offset: 80 },
+      { id: 'plc-x2', name: 'X2', side: 'top', offset: 110 },
+      { id: 'plc-x3', name: 'X3', side: 'top', offset: 140 },
+      { id: 'plc-x4', name: 'X4', side: 'top', offset: 170 },
+      { id: 'plc-x5', name: 'X5', side: 'top', offset: 200 },
+      { id: 'plc-24v', name: '24V', side: 'left', offset: 60 },
+      { id: 'plc-0v', name: '0V', side: 'left', offset: 120 },
+      // Bottom: 7 Outputs
+      { id: 'plc-com', name: 'COM', side: 'bottom', offset: 20 },
+      { id: 'plc-y0', name: 'Y0', side: 'bottom', offset: 50 },
+      { id: 'plc-y1', name: 'Y1', side: 'bottom', offset: 80 },
+      { id: 'plc-y2', name: 'Y2', side: 'bottom', offset: 110 },
+      { id: 'plc-y3', name: 'Y3', side: 'bottom', offset: 140 },
+      { id: 'plc-y4', name: 'Y4', side: 'bottom', offset: 170 },
+      { id: 'plc-y5', name: 'Y5', side: 'bottom', offset: 200 },
+    ],
+  },
+];
+
+export const INITIAL_ELEMENTS: CanvasElement[] = [
+  {
+    ...DEFAULT_TEMPLATES[0],
+    instanceId: 'el-demo-psu',
+    tag: '-PS1',
+    x: 100,
+    y: 120,
+    rotation: 0,
+  },
+  {
+    ...DEFAULT_TEMPLATES[2],
+    instanceId: 'el-demo-plc',
+    tag: '-PLC1',
+    x: 380,
+    y: 100,
+    rotation: 0,
+  },
+  {
+    ...DEFAULT_TEMPLATES[1],
+    instanceId: 'el-demo-relay',
+    tag: '-K1',
+    x: 720,
+    y: 260,
+    rotation: 0,
+  },
+];
+
+export const INITIAL_WIRES: Wire[] = [
+  {
+    id: 'wire-demo-1',
+    fromElementId: 'el-demo-psu',
+    fromPinId: 'psu-v1',
+    toElementId: 'el-demo-plc',
+    toPinId: 'plc-24v',
+    color: '#dc2626',
+    strokeWidth: 2,
+    lineStyle: 'solid',
+    label: '+24V',
+  },
+  {
+    id: 'wire-demo-2',
+    fromElementId: 'el-demo-psu',
+    fromPinId: 'psu-0v',
+    toElementId: 'el-demo-plc',
+    toPinId: 'plc-0v',
+    color: '#2563eb',
+    strokeWidth: 2,
+    lineStyle: 'solid',
+    label: '0V',
+  },
+  {
+    id: 'wire-demo-3',
+    fromElementId: 'el-demo-plc',
+    fromPinId: 'plc-y0',
+    toElementId: 'el-demo-relay',
+    toPinId: 'k-13',
+    color: '#1e293b',
+    strokeWidth: 2,
+    lineStyle: 'solid',
+    label: 'Y0_OUT',
+  },
+];
